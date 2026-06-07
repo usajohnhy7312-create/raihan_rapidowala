@@ -97,17 +97,13 @@
       margin-bottom: 18px;
     }
 
-    .avatar {
+    .avatarImage {
       width: 62px;
       height: 62px;
       border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #22c55e, #2563eb);
-      font-size: 1.6rem;
-      font-weight: 800;
+      object-fit: cover;
       flex-shrink: 0;
+      border: 2px solid rgba(255, 255, 255, 0.18);
     }
 
     .mutedText {
@@ -149,7 +145,7 @@
       margin-bottom: 18px;
     }
 
-    .statBox, .infoItem, .availabilityCard, .timerCard, .reviewBox {
+    .statBox, .infoItem, .availabilityCard, .timerCard {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 18px;
@@ -181,16 +177,6 @@
 
     .primary {
       background: linear-gradient(135deg, #22c55e, #16a34a);
-      color: white;
-    }
-
-    .secondary {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-    }
-
-    .dark {
-      background: rgba(255, 255, 255, 0.12);
       color: white;
     }
 
@@ -237,6 +223,7 @@
       color: rgba(255, 255, 255, 0.74);
       line-height: 1.6;
       margin-bottom: 18px;
+      text-transform: lowercase;
     }
 
     .infoList {
@@ -253,23 +240,6 @@
 
     .infoItem span {
       color: rgba(255, 255, 255, 0.72);
-    }
-
-    .textInput {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(255, 255, 255, 0.12);
-      color: white;
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
-
-    .submitted {
-      color: #bbf7d0;
-      margin-top: 10px;
-      font-size: 0.92rem;
     }
 
     .bookingLine {
@@ -325,6 +295,12 @@
       font-weight: 900;
     }
 
+    .timerText {
+      display: block;
+      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
     .progressBar {
       height: 12px;
       background: rgba(255, 255, 255, 0.12);
@@ -356,7 +332,6 @@
   <div class="backgroundGlow glowOne"></div>
   <div class="backgroundGlow glowTwo"></div>
 
-  <!-- Home Screen -->
   <div id="home" class="screen active">
     <div class="heroScreen">
       <p class="eyebrow">Trusted local ride booking</p>
@@ -364,7 +339,11 @@
 
       <div class="heroCard">
         <div class="avatarWrap">
-          <div class="avatar">R</div>
+          <img
+            class="avatarImage"
+            src="https://i.postimg.cc/2zJPSvvk/1780843865887.jpg"
+            alt="Raihan Rapido Wala"
+          >
           <div>
             <h2>Raihan Rapido Wala</h2>
             <p class="mutedText">Fast pickup • Local service • Easy booking</p>
@@ -392,7 +371,6 @@
     </div>
   </div>
 
-  <!-- Details Screen -->
   <div id="details" class="screen">
     <div class="panel">
       <div class="panelHeader">
@@ -418,18 +396,10 @@
         </div>
       </div>
 
-      <div class="reviewBox">
-        <label class="inputLabel">Apni rating ya message likhiye</label>
-        <input type="text" id="ratingInput" class="textInput" placeholder="Jaise: service achi hai">
-        <button class="button dark" onclick="submitRating()">Submit Rating</button>
-        <p id="submittedText" class="submitted" style="display:none;"></p>
-      </div>
-
-      <button class="button primary" onclick="goTo('booking')">Book Karo</button>
+      <button class="button primary" onclick="goTo('booking')">Click Here</button>
     </div>
   </div>
 
-  <!-- Booking Screen -->
   <div id="booking" class="screen">
     <div class="panel bookingPanel">
       <div class="panelHeader">
@@ -438,13 +408,12 @@
       </div>
 
       <h2 class="panelTitle">Only Raihan Rapido Wala Available</h2>
-      <p class="bookingLine">Book Kare Free Mai</p>
+      <p class="bookingLine">chut specialist</p>
 
       <div class="availabilityCard">
         <div>
           <p class="smallLabel">Current Status</p>
           <h3>Online</h3>
-          <p class="mutedText">Sabko samajh aaye: abhi service online hai aur booking li ja rahi hai.</p>
         </div>
         <div style="text-align:center;">
           <div class="signalDot"></div>
@@ -456,12 +425,11 @@
     </div>
   </div>
 
-  <!-- Waiting Screen -->
   <div id="waiting" class="screen">
     <div class="panel waitingPanel">
       <div class="ring"></div>
-      <h2 class="panelTitle">Wait Raihan Abhi Hela Rha Hai</h2>
-      <p class="panelSubtitle">5 second ke baad automatic call pad khul jayega.</p>
+      <h2 class="panelTitle">wait</h2>
+      <p class="bookingLine">Wait Raihan Abhi Hela Rha Hai</p>
 
       <div class="timerCard">
         <span id="timerNumber" class="timerNumber">5</span>
@@ -471,8 +439,6 @@
       <div class="progressBar">
         <div id="progressFill" class="progressFill"></div>
       </div>
-
-      <a href="tel:+918597847390" class="button secondary">Abhi Call Karo</a>
     </div>
   </div>
 
@@ -501,7 +467,7 @@
       countdownInterval = setInterval(() => {
         countdown--;
         document.getElementById('timerNumber').textContent = countdown;
-        document.getElementById('progressFill').style.width = `${((5 - countdown) / 5) * 100}%`;
+        document.getElementById('progressFill').style.width = ((5 - countdown) / 5) * 100 + '%';
 
         if (countdown <= 0) {
           clearInterval(countdownInterval);
@@ -509,17 +475,6 @@
         }
       }, 1000);
     }
-
-    function submitRating() {
-      const input = document.getElementById('ratingInput');
-      const submittedText = document.getElementById('submittedText');
-      
-      if (input.value.trim() === '') return;
-      
-      submittedText.textContent = `Aapka response: ${input.value.trim()}`;
-      submittedText.style.display = 'block';
-      input.value = '';
-    }
   </script>
 </body>
-          </html>
+</html>
