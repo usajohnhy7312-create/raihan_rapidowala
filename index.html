@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raihan Rapido Wala</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #081224 0%, #10203a 45%, #14213d 100%);
+      color: #ffffff;
+      overflow: hidden;
+      position: relative;
+      padding: 24px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .backgroundGlow {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(40px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .glowOne {
+      width: 220px;
+      height: 220px;
+      background: #2563eb;
+      top: 5%;
+      left: -60px;
+    }
+
+    .glowTwo {
+      width: 240px;
+      height: 240px;
+      background: #22c55e;
+      bottom: 5%;
+      right: -80px;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+      z-index: 1;
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .heroScreen {
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin-bottom: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .topTitle {
+      margin-bottom: 18px;
+      font-size: 2.5rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .heroCard, .panel {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .avatarWrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .avatar {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #22c55e, #2563eb);
+      font-size: 1.6rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .mutedText {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .chipRow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .success {
+      background: rgba(34, 197, 94, 0.18);
+      color: #bbf7d0;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .warning {
+      background: rgba(250, 204, 21, 0.14);
+      color: #fde68a;
+      border: 1px solid rgba(250, 204, 21, 0.35);
+    }
+
+    .statsGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .statBox, .infoItem, .availabilityCard, .timerCard, .reviewBox {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .statLabel, .smallLabel {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.68);
+      margin-bottom: 6px;
+    }
+
+    .button {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+    }
+
+    .secondary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+    }
+
+    .dark {
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+
+    .panelHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .backButton {
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .liveBadge {
+      background: rgba(255, 255, 255, 0.12);
+      color: #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .online {
+      color: #bbf7d0;
+      background: rgba(34, 197, 94, 0.14);
+      border-color: rgba(34, 197, 94, 0.35);
+    }
+
+    .panelTitle {
+      font-size: 1.7rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .panelSubtitle {
+      color: rgba(255, 255, 255, 0.74);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .infoList {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .infoItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .infoItem span {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .textInput {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .submitted {
+      color: #bbf7d0;
+      margin-top: 10px;
+      font-size: 0.92rem;
+    }
+
+    .bookingLine {
+      color: #86efac;
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .availabilityCard {
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .signalDot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.15);
+    }
+
+    .signalText {
+      font-size: 0.85rem;
+      color: #bbf7d0;
+      font-weight: 800;
+    }
+
+    .largeButton {
+      padding: 16px 18px;
+      font-size: 1.05rem;
+    }
+
+    .waitingPanel {
+      text-align: center;
+    }
+
+    .ring {
+      width: 86px;
+      height: 86px;
+      border: 8px solid rgba(255, 255, 255, 0.12);
+      border-top-color: #22c55e;
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      animation: spin 1s linear infinite;
+    }
+
+    .timerNumber {
+      font-size: 2.4rem;
+      font-weight: 900;
+    }
+
+    .progressBar {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progressFill {
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      width: 0%;
+      transition: width 1s linear;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      .topTitle { font-size: 2.15rem; }
+      .heroCard, .panel { padding: 18px; border-radius: 22px; }
+      .panelTitle { font-size: 1.45rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="backgroundGlow glowOne"></div>
+  <div class="backgroundGlow glowTwo"></div>
+
+  <!-- Home Screen -->
+  <div id="home" class="screen active">
+    <div class="heroScreen">
+      <p class="eyebrow">Trusted local ride booking</p>
+      <h1 class="topTitle">RAIHAN RAPIDO WALA</h1>
+
+      <div class="heroCard">
+        <div class="avatarWrap">
+          <div class="avatar">R</div>
+          <div>
+            <h2>Raihan Rapido Wala</h2>
+            <p class="mutedText">Fast pickup • Local service • Easy booking</p>
+          </div>
+        </div>
+
+        <div class="chipRow">
+          <span class="chip success">Online Now</span>
+          <span class="chip warning">4.5 ⭐</span>
+        </div>
+
+        <div class="statsGrid">
+          <div class="statBox">
+            <span class="statLabel">Service</span>
+            <strong>Rapido Ride</strong>
+          </div>
+          <div class="statBox">
+            <span class="statLabel">Booking</span>
+            <strong>Free</strong>
+          </div>
+        </div>
+
+        <button class="button primary" onclick="goTo('details')">Details Dekho</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Details Screen -->
+  <div id="details" class="screen">
+    <div class="panel">
+      <div class="panelHeader">
+        <button class="backButton" onclick="goTo('home')">← Back</button>
+        <span class="liveBadge">Profile Details</span>
+      </div>
+
+      <h2 class="panelTitle">Raihan Rapido Wala</h2>
+      <p class="panelSubtitle">Reliable local ride support with quick response and simple booking flow.</p>
+
+      <div class="infoList">
+        <div class="infoItem">
+          <span>Rating</span>
+          <strong>4.5 ⭐</strong>
+        </div>
+        <div class="infoItem">
+          <span>Availability</span>
+          <strong>Active today</strong>
+        </div>
+        <div class="infoItem">
+          <span>Booking charge</span>
+          <strong>Free</strong>
+        </div>
+      </div>
+
+      <div class="reviewBox">
+        <label class="inputLabel">Apni rating ya message likhiye</label>
+        <input type="text" id="ratingInput" class="textInput" placeholder="Jaise: service achi hai">
+        <button class="button dark" onclick="submitRating()">Submit Rating</button>
+        <p id="submittedText" class="submitted" style="display:none;"></p>
+      </div>
+
+      <button class="button primary" onclick="goTo('booking')">Book Karo</button>
+    </div>
+  </div>
+
+  <!-- Booking Screen -->
+  <div id="booking" class="screen">
+    <div class="panel bookingPanel">
+      <div class="panelHeader">
+        <button class="backButton" onclick="goTo('details')">← Back</button>
+        <span class="liveBadge online">Status: Online</span>
+      </div>
+
+      <h2 class="panelTitle">Only Raihan Rapido Wala Available</h2>
+      <p class="bookingLine">Book Kare Free Mai</p>
+
+      <div class="availabilityCard">
+        <div>
+          <p class="smallLabel">Current Status</p>
+          <h3>Online</h3>
+          <p class="mutedText">Sabko samajh aaye: abhi service online hai aur booking li ja rahi hai.</p>
+        </div>
+        <div style="text-align:center;">
+          <div class="signalDot"></div>
+          <div class="signalText">LIVE</div>
+        </div>
+      </div>
+
+      <button class="button primary largeButton" onclick="goTo('waiting')">Book</button>
+    </div>
+  </div>
+
+  <!-- Waiting Screen -->
+  <div id="waiting" class="screen">
+    <div class="panel waitingPanel">
+      <div class="ring"></div>
+      <h2 class="panelTitle">Wait Raihan Abhi Hela Rha Hai</h2>
+      <p class="panelSubtitle">5 second ke baad automatic call pad khul jayega.</p>
+
+      <div class="timerCard">
+        <span id="timerNumber" class="timerNumber">5</span>
+        <span class="timerText">seconds remaining</span>
+      </div>
+
+      <div class="progressBar">
+        <div id="progressFill" class="progressFill"></div>
+      </div>
+
+      <a href="tel:+918597847390" class="button secondary">Abhi Call Karo</a>
+    </div>
+  </div>
+
+  <script>
+    let countdownInterval;
+    let countdown = 5;
+
+    function goTo(step) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      document.getElementById(step).classList.add('active');
+
+      if (step === 'waiting') {
+        startCountdown();
+      }
+    }
+
+    function startCountdown() {
+      countdown = 5;
+      document.getElementById('timerNumber').textContent = countdown;
+      document.getElementById('progressFill').style.width = '0%';
+
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      countdownInterval = setInterval(() => {
+        countdown--;
+        document.getElementById('timerNumber').textContent = countdown;
+        document.getElementById('progressFill').style.width = `${((5 - countdown) / 5) * 100}%`;
+
+        if (countdown <= 0) {
+          clearInterval(countdownInterval);
+          window.location.href = 'tel:+918597847390';
+        }
+      }, 1000);
+    }
+
+    function submitRating() {
+      const input = document.getElementById('ratingInput');
+      const submittedText = document.getElementById('submittedText');
+      
+      if (input.value.trim() === '') return;
+      
+      submittedText.textContent = `Aapka response: ${input.value.trim()}`;
+      submittedText.style.display = 'block';
+      input.value = '';
+    }
+  </script>
+</body>
+          </html>
